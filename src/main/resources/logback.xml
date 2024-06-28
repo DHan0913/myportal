@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true"><!-- debug="true" : logback 상태 디버깅 가능 -->
+	<!-- Appender: 어디에, 어떤 로그를 찍을 것인가 -->
+	<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- 인코더 종류: PatternEncoder, HTMLLayoutEncoder, JsonLayoutEncoder 등 -->
+		<encoder>
+			<charset>UTF-8</charset>
+			<Pattern>
+				%d{HH:mm:ss.SSS} %thread %-5level %logger{5} - %msg%n
+			</Pattern>
+		</encoder>
+	</appender>
+	
+	<!-- FileAppender : 로그를 파일로 기록할 때 -->
+	<appender name="fileAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>\log-myportal\myportal.log</file>	
+		<encoder>
+			<charset>UTF-8</charset>
+			<Pattern>
+				%d{HH:mm:ss.SSS} %thread %-5level %logger{5} - %msg%n
+			</Pattern>
+		</encoder>
+		<!-- RollingPolicy -->
+		<!-- FixedWindowRollingPolicy -->
+		<!-- rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>\log-myportal\myportal.%{i}.log</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>10</maxIndex>
+		</rollingPolicy --><!-- myportal.1.log ~ myportal.10.log 유지 -->
+		<!-- TimeBasedRollingPolicy 
+			: 시간 기준으로 롤오버를 수행
+			: triggeringPolicy는 없음 -->
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>\log-myportal\myportal.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy><!-- 30일 분만 보관 -->
+		<!-- SizeAndTimeBasedRollingPolicy
+			: 시간 및 파일 사이즈를 기준으로 롤오버를 수행
+			: triggeringPolicy는 없음 -->
+		<!-- rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>\log-myportal\myportal.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<maxFileSize></maxFileSize>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy -->
+		<!-- TriggeringPolicy -->
+		<!-- SizeBasedTriggeringPolicy -->
+		<!-- triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>1KB</MaxFileSize>	
+		</triggeringPolicy -->
+	</appender>
+	
+	<!-- Appender 등록 -->
+	<logger name="himedia.myportal" level="DEBUG">
+		<appender-ref ref="consoleAppender" />
+	</logger>
+	
+	<!-- root Appender -->
+	<root level="TRACE">
+		<appender-ref ref="fileAppender" />
+	</root>
+</configuration>

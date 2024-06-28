@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- parameter, resultType을 위한 객체의 별칭 정보 -->
+	<typeAliases>
+		<typeAlias 
+			type="himedia.myportal.repositories.vo.GuestbookVo"
+			alias="GuestbookVo" />
+		<typeAlias 
+			type="himedia.myportal.repositories.vo.UserVo"
+			alias="UserVo" />
+		<typeAlias 
+			type="himedia.myportal.repositories.vo.BoardVo"
+			alias="BoardVo" />
+	</typeAliases>
+	<!-- 테이블 정보와 객체 정보 매핑을 위한 매퍼 -->
+	<mappers>
+		<mapper resource="/mybatis/mappers/guestbook.xml" />
+		<mapper resource="/mybatis/mappers/users.xml" />
+		<mapper resource="/mybatis/mappers/board.xml" />
+	</mappers>
+</configuration>
