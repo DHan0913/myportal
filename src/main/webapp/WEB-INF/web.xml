@@ -14,6 +14,13 @@
   <servlet>
   	<servlet-name>spring</servlet-name>
   	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  	<!--  멀티파트 설정 -->
+  	<multipart-config>
+  		<location>c:\\uploads-temp</location><!-- 임시 디렉터리 -->
+  		<max-file-size>10485760</max-file-size><!-- 개별 업로드 파일의 최대 크기 10mb -->
+  		<max-request-size>20971520</max-request-size><!-- 전체 요청의 최대 크기 20mb -->
+  		<file-size-threshold>10485760</file-size-threshold><!-- 업로드를 위한 메모리 사이즈 -->
+  	</multipart-config>
   </servlet>
   
   <servlet-mapping>

@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import himedia.myportal.repositories.vo.BoardVo;
 import himedia.myportal.repositories.vo.UserVo;
 import himedia.myportal.services.BoardService;
+import himedia.myportal.services.FileUploadService;
 import jakarta.servlet.http.HttpSession;
 
 //	게시판은 사용자 기반 서비스
@@ -25,6 +28,8 @@ import jakarta.servlet.http.HttpSession;
 public class BoardController {
 	@Autowired
 	private BoardService boardService;
+	@Autowired
+	FileUploadService fileUploadService;
 	
 	@RequestMapping({"", "/", "/list"})
 	public String list(Model model) {
@@ -74,8 +79,9 @@ public class BoardController {
 	//	작성 액션
 	@PostMapping("/write")
 	public String writeAction(@ModelAttribute BoardVo boardVo,
+			@RequestParam("imageFile") MultipartFile imageFile,
 			HttpSession session,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes, Model model) {
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		/*
 		if (authUser == null) {
@@ -84,8 +90,21 @@ public class BoardController {
 		}
 		*/
 		
-		boardVo.setUserNo(authUser.getNo());	//	작성자 PK
-		boardService.write(boardVo);
+		if (imageFile != null && !imageFile.isEmpty()) {
+			System.out.println("원본파일명" + imageFile.getOriginalFilename());
+			System.out.println("파일사이즈" + imageFile.getSize());
+			System.out.println("파라미터이름" + imageFile.getName());
+			
+			//	실제 파일로 저장
+			String saveFilename = fileUploadService.store(imageFile);
+			model.addAttribute("imageFilename", saveFilename);
+			boardVo.setUserNo(authUser.getNo());	//	작성자 PK
+			boardVo.setImageName(saveFilename);
+			boardService.writeImage(boardVo);
+		} else {
+			boardVo.setUserNo(authUser.getNo());	//	작성자 PK
+			boardService.write(boardVo);
+		}
 		
 		return "redirect:/board";
 	}

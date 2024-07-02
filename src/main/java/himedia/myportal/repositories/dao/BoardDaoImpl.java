@@ -43,6 +43,23 @@ public class BoardDaoImpl implements BoardDao {
 			throw new BoardDaoException("게시물 입력 중 예외 발생!", boardVo);
 		}
 	}
+	
+	// 게시물 작성 액션
+		@Override
+		public int insertImage(BoardVo boardVo) {
+			logger.debug("게시물 작성 액션");
+			logger.debug("boardVo:" + boardVo);
+			
+			try {
+				int insertedCount = sqlSession.insert("board.insertImage", boardVo);
+				logger.debug("삽입된 레코드 수:" + insertedCount);
+				return insertedCount;
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error("게사물 입력 중 예외 발생!");
+				throw new BoardDaoException("게시물 입력 중 예외 발생!", boardVo);
+			}
+		}
 
 	@Override
 	public BoardVo getContent(Long no) {

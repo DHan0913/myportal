@@ -1,4 +1,4 @@
-function checkEmail(event) {
+/*function checkEmail(event) {
 	//	이벤트 발생 객체 
 	const obj = event.target;	//	button#check-email
 	const target = obj.getAttribute("data-target");	//	API 호출 위치
@@ -32,7 +32,7 @@ function checkEmail(event) {
 	.catch(error => console.error(error));
 }
 
-
+*/
 window.addEventListener("load", event => {
 	document.getElementById("check-email")
 		.addEventListener("click", checkEmail);
@@ -44,7 +44,7 @@ window.addEventListener("load", event => {
 		
 		event.preventDefault();
 		
-		//	이름 검증
+		/* 	이름 검증
 		if (frm.name.value.trim().length === 0) {
 			alert("이름을 입력하세요");
 			frm.name.focus();
@@ -60,7 +60,9 @@ window.addEventListener("load", event => {
 		if (frm.email.value.trim().length === 0) {
 			frm.email.focus();
 			return;
-		}
+		} 
+		*/
+		
 		//	성별 검증
 		const genders = 
 			document.querySelector('input[name=gender]:checked');

@@ -11,4 +11,5 @@ public interface BoardDao {
 	public int update(BoardVo boardVo);
 	public int increaseHitCount(Long no);
 	public int delete(Long no, Long userNo);
+	public int insertImage(BoardVo boardVo);
 }
