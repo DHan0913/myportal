@@ -1,82 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-       	   http://www.springframework.org/schema/beans/spring-beans.xsd
-           http://www.springframework.org/schema/context 
-           http://www.springframework.org/schema/context/spring-context.xsd
-           http://www.springframework.org/schema/mvc 
-           http://www.springframework.org/schema/mvc/spring-mvc.xsd
-           http://www.springframework.org/schema/aop 
-           http://www.springframework.org/schema/aop/spring-aop.xsd">
-	<context:annotation-config />
-	<context:component-scan
-		base-package="himedia.myportal.controllers">
-		<context:include-filter type="annotation"
-			expression="org.springframework.stereotype.Controller" />
-		<context:exclude-filter type="annotation"
-			expression="org.springframework.stereotype.Service" />
-		<context:exclude-filter type="annotation"
-			expression="org.springframework.stereotype.Repository" />
-	</context:component-scan>
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:mvc="http://www.springframework.org/schema/mvc"
+   xmlns:aop="http://www.springframework.org/schema/aop"
+   xmlns:p="http://www.springframework.org/schema/p"
+   xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc 
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/aop 
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+   <!-- 어노테이션 기반 기능을 활성화 -->
+   <context:annotation-config />
+   <!-- 컴포넌트 스캐닝 -->
+   <!-- base-package의 하위 패키지를 대상으로 컴포넌트 스캔 Bean으로 등록 -->
+   <context:component-scan
+      base-package="himedia.myportal.controllers, learnbyteaching.todos.controllers">
+      <context:include-filter type="annotation"
+         expression="org.springframework.stereotype.Controller" />
+      <context:exclude-filter type="annotation"
+         expression="org.springframework.stereotype.Service" />
+      <context:exclude-filter type="annotation"
+         expression="org.springframework.stereotype.Repository" />
+   </context:component-scan>
 
-	<!-- 정적 자원의 요청을 디폴트 서블릿으로 위임 -->
-	<mvc:annotation-driven>
-		<!-- MessageConveter 등록 -->
-		<mvc:message-converters>
-			<bean
-				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-				<property name="supportedMediaTypes">
-					<list>
-						<!-- Map 타입을 json으로 변환해주는 Jackson Converter -->
-						<value>application/json;charset=UTF-8</value>
-					</list>
-				</property>
-			</bean>
-		</mvc:message-converters>
-	</mvc:annotation-driven>
-	<mvc:default-servlet-handler />
+   <!-- 정적 자원의 요청을 디폴트 서블릿으로 위임 -->
+   <mvc:annotation-driven>
+      <!-- MessageConveter 등록 -->
+      <mvc:message-converters>
+         <bean
+            class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+            <property name="supportedMediaTypes">
+               <list>
+                  <!-- Map 타입을 json으로 변환해주는 Jackson Converter -->
+                  <value>application/json;charset=UTF-8</value>
+               </list>
+            </property>
+         </bean>
+      </mvc:message-converters>
+   </mvc:annotation-driven>
+   <mvc:default-servlet-handler />
 
-	<!-- View Resolver -->
-	<bean id="viewResolver"
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass"
-			value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/WEB-INF/views/" />
-		<property name="suffix" value=".jsp" />
-		<property name="order" value="1" />
-	</bean>
+   <!-- View Resolver -->
+   <bean id="viewResolver"
+      class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+      <property name="viewClass"
+         value="org.springframework.web.servlet.view.JstlView" />
+      <property name="prefix" value="/WEB-INF/views/" />
+      <property name="suffix" value=".jsp" />
+      <property name="order" value="1" />
+   </bean>
 
-	<!-- Interceptors -->
-	<mvc:interceptors>
-		<!-- mvc:interceptor> <mvc:mapping path="/board/**" /> <bean class="himedia.myportal.interceptors.MyInterceptor" 
-			/> </mvc:interceptor> <mvc:interceptor> <mvc:mapping path="/board/**" /> 
-			<bean class="himedia.myportal.interceptors.MyInterceptor2" /> </mvc:interceptor -->
-		<mvc:interceptor>
-			<mvc:mapping path="/board/**" />
-			<!-- 특정 URL의 배제할 때 -->
-			<mvc:exclude-mapping path="/board" />
-			<mvc:exclude-mapping path="/board/" />
-			<mvc:exclude-mapping path="/board/list/**" />
-			<bean class="himedia.myportal.interceptors.AuthInterceptor" />
-		</mvc:interceptor>
-	</mvc:interceptors>
+   <!-- Interceptors -->
+   <mvc:interceptors>
+      <!-- mvc:interceptor> <mvc:mapping path="/board/**" /> <bean class="himedia.myportal.interceptors.MyInterceptor" 
+         /> </mvc:interceptor> <mvc:interceptor> <mvc:mapping path="/board/**"/> <bean 
+         class="himedia.myportal.interceptors.MyInterceptor2" /> </mvc:interceptor -->
+      <mvc:interceptor>
+         <mvc:mapping path="/board/**" />
+         <!-- 특정 URL의 배제할 때 -->
+         <mvc:exclude-mapping path="/board" />
+         <mvc:exclude-mapping path="/board/" />
+         <mvc:exclude-mapping path="/board/list/**" />
+         <bean class="himedia.myportal.interceptors.AuthInterceptor" />
+      </mvc:interceptor>
+   </mvc:interceptors>
 
-	<!-- MessageSource : 반드시 bean idㅡㄹ messageSource로 설정해야 한다 -->
-	<bean id="messageSource"
-		class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basenames" value="messages/messages_ko" />
-		<property name="defaultEncoding" value="UTF-8" />
-	</bean>
+   <!-- MessageSource : 반드시 bean id를 messageSource로 설정해야 한다 -->
+   <bean id="messageSource"
+      class="org.springframework.context.support.ResourceBundleMessageSource">
+      <property name="basenames" value="messages/messages_ko" />
+      <property name="defaultEncoding" value="UTF-8" />
+   </bean>
 
-	<!-- MultupartResolver -->
-	<bean id="multipartResolver"
-		class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
+   <!-- MultipartResolver -->
+   <bean id="multipartResolver"
+      class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
 
-	<!-- Resource Mapping -->
-	<mvc:resources mapping="/upload-images/**"
-		location="file:c:/uploads/" />
+   <!-- Resource Mapping -->
+   <mvc:resources mapping="/upload-images/**"
+      location="file:c:/uploads/" />
+
 </beans>
