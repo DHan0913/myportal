@@ -18,7 +18,7 @@
 		<div id="content">
 			<div id="site-introduction">
 	
-			<h1>OOPS!</h1>
+			<h1>OOPSS!</h1>
 			<h2>Error Occured: </h2>
 			<h3>${name }</h3>
 			<p>${message }			
